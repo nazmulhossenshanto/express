@@ -1,15 +1,18 @@
+import bcrypt from "bcryptjs";
 import { pool } from "../../db/index.js";
 import type { ICreateUser, IUpdateUser, IUser } from "./user.interface.js";
 
  const createUSerIntoDB = async(payLoad: ICreateUser)=>{
      const { name, email, password, age } = payLoad;
+     const hashedPassword = await bcrypt.hash(password, 8);
        const result = await pool.query(`
          INSERT INTO
           users(name, email, password, age)
          VALUES($1, $2,$3,$4)
            RETURNING *
-           `, [name, email, password, age]);
-           return result;
+           `, [name, email, hashedPassword, age]);
+           delete result.rows[0].password;
+           return result.rows[0];
  };
 
  const getSingleUserFromDB = async(id: string)=>{

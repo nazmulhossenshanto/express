@@ -3,6 +3,7 @@
  } from "express";
  const app: Application = express();
 import { userRoutes } from "./modules/user/user.routes.js";
+import { profileRoutes } from "./modules/profile/profile.routes.js";
  
  app.use(express.json());
  app.get("/", (req, res) => {
@@ -13,7 +14,8 @@ import { userRoutes } from "./modules/user/user.routes.js";
    });
  });
 
- app.use("/api/users", userRoutes)
+ app.use("/api/users", userRoutes);
+ app.use("/api/profiles", profileRoutes)
 
  
 
